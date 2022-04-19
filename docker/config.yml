@@ -47,7 +47,7 @@ ZOOKEEPER_NAVIGATOR_enable: false
 # ===== Apache Kafka ========
 #
 KAFKA_enable: true
-CONFLUENT_PLATFORM_version: 7.1.0
+CONFLUENT_PLATFORM_version: 7.0.1
 # one of enterprise, community
 KAFKA_edition: 'community'
 KAFKA_volume_map_data: false
