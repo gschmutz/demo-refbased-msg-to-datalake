@@ -962,7 +962,7 @@ MINIO_datacenters: 1
 MINIO_install: 'single'
 MINIO_nodes: 1
 MINIO_access_key: minio
-MINIO_secret_key: abc123!
+MINIO_secret_key: 1234567890
 # add additional buckets, comma separated, admin-bucket will be created by default
 MINIO_default_buckets: ''
 MINIO_browser_enable: true
