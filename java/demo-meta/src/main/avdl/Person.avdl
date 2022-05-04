@@ -4,6 +4,7 @@ protocol PersonProtocol {
   record Person {
     string id;
     string firstName;
+    union { null, string } middleName = null;
     string lastName;
     string street;
     string number;

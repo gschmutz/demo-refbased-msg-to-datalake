@@ -107,6 +107,7 @@ public class SpringBootKafkaProducerApplication implements CommandLineRunner {
 
 			UUID personId = UUID.randomUUID();
 			Person person = Person.newBuilder().setId(personId.toString()).setFirstName(faker.name().firstName())
+					.setMiddleName(faker.name().firstName())
 					.setLastName(faker.name().lastName())
 					.setStreet(faker.address().streetName())
 					.setNumber(faker.address().streetAddressNumber())
