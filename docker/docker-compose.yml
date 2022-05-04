@@ -528,7 +528,7 @@ services:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: 1234567890
       MINIO_REGION_NAME: us-east-1
-      MINIO_BROWSER: on
+      MINIO_BROWSER: "on"
       #MINIO_PUBLIC_IPS: minio-1
       #MINIO_DOMAIN: minio.io
       #MINIO_DEFAULT_BUCKETS: 'admin-bucket,person-bucket,product-bucket'
