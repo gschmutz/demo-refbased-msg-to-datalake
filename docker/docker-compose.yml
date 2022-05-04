@@ -333,7 +333,7 @@ services:
       MINIO_BROWSER: 'True'
       #MINIO_PUBLIC_IPS: minio-1
       #MINIO_DOMAIN: minio.io
-      #MINIO_DEFAULT_BUCKETS: 'admin-bucket,'
+      #MINIO_DEFAULT_BUCKETS: 'admin-bucket,person-bucket,product-bucket'
     volumes:
       - ./data-transfer:/data-transfer
     command: server /data --console-address ":9010"
@@ -355,7 +355,7 @@ services:
         sleep 10
         mc alias set minio-1 http://minio-1:9000 minio 1234567890
         mc mb --ignore-existing minio-1/admin-bucket
-           for i in $$(echo "" | sed "s/,/ /g")
+           for i in $$(echo "person-bucket,product-bucket" | sed "s/,/ /g")
         do
           mc mb --ignore-existing minio-1/$$i
         done
