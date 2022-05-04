@@ -14,7 +14,7 @@ First build and register the necessary Avro Schemas
 export DATAPLATFORM_IP=80.209.234.152
 
 cd ./java/demo-meta
-mvn clean package
+mvn clean package -Dmaven.test.skip=true
 
 mvn schema-registry:register 
 ```
@@ -34,6 +34,7 @@ Start the simulator, which creates a Kafka message with a reference to the "larg
 export DATAPLATFORM_IP=80.209.234.152
 
 cd ./java/demo-refbased-producer
-mvn package spring-boot:run
+mvn package -Dmaven.test.skip=true
+mvn spring-boot:run
 ```
 
