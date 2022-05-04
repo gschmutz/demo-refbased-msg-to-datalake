@@ -205,6 +205,27 @@ services:
       - |
         while [ 1 -eq 1 ];do sleep 60;done
     restart: unless-stopped
+  #  ================================== Jikkou ========================================== #
+  jikkou:
+    image: streamthoughts/jikkou:0.9.0
+    container_name: jikkou
+    hostname: jikkou
+    labels:
+      com.platys.name: jikkou
+    environment:
+      JIKKOU_DEFAULT_KAFKA_BOOTSTRAP_SERVERS: kafka-1:19092,kafka-2:19093,kafka-3:19094
+    volumes:
+      - ./data-transfer:/data-transfer
+      - ./scripts/jikkou/:/jikkou
+    command:
+      - topics
+      - apply
+      - --files
+      - /jikkou/
+      - --file-name
+      - '**/*.yml'
+      - --exclude-internals
+      - --yes
   #  ================================== Apache Kafka HQ (AKHQ) ========================================== #
   akhq:
     image: tchiotludo/akhq:latest
@@ -224,7 +245,7 @@ services:
               properties:
                 bootstrap.servers: 'kafka-1:19092,kafka-2:19093,kafka-3:19094'
               schema-registry:
-                url: "http://${PUBLIC_IP}:8081"
+                url: "http://schema-registry-1:8081"
                 type: "confluent"
     volumes:
       - ./data-transfer:/data-transfer
@@ -251,6 +272,7 @@ services:
       SDC_CONF_MONITOR_MEMORY: 'true'
       SDC_CONF_PIPELINE_MAX_RUNNERS_COUNT: 50
       SDC_CONF_http_authentication: form
+      SDC_CONF_RUNTIME_CONF_LOCATION: embedded
     volumes:
       - ./data-transfer:/data-transfer
       - ./conf/streamsets/pre-docker-entrypoint.sh:/pre-docker-entrypoint.sh
@@ -270,7 +292,7 @@ services:
     restart: unless-stopped
   #  ================================== NiFi ========================================== #
   nifi-1:
-    image: apache/nifi:1.15.3
+    image: apache/nifi:1.16.0
     container_name: nifi-1
     hostname: nifi-1
     labels:
@@ -294,7 +316,7 @@ services:
     restart: unless-stopped
   #  ================================== Minio ========================================== #
   minio-1:
-    image: minio/minio:RELEASE.2022-02-01T18-00-14Z
+    image: minio/minio:RELEASE.2022-04-01T03-41-39Z
     container_name: minio-1
     hostname: minio-1
     labels:
@@ -305,13 +327,13 @@ services:
       - 9000:9000
       - 9010:9010
     environment:
-      MINIO_ROOT_USER: V42FCGRVMK24JJ8DHUYG
-      MINIO_ROOT_PASSWORD: bKhWxVF3kQoLY9kFmt91l+tDrEoZjqnWXzY9Eza
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: 1234567890
       MINIO_REGION_NAME: us-east-1
       MINIO_BROWSER: 'True'
       #MINIO_PUBLIC_IPS: minio-1
       #MINIO_DOMAIN: minio.io
-      #MINIO_DEFAULT_BUCKETS: 'admin-bucket,'
+      #MINIO_DEFAULT_BUCKETS: 'admin-bucket,person-bucket,product-bucket'
     volumes:
       - ./data-transfer:/data-transfer
     command: server /data --console-address ":9010"
@@ -325,14 +347,15 @@ services:
       com.platys.name: minio
     volumes:
       - ./data-transfer:/data-transfer
-      - ./conf/minio/config.json:/root/.mc/config.json
+#      - ./conf/minio/config.json:/root/.mc/config.json
     entrypoint:
       - /bin/sh
       - -c
       - |
         sleep 10
+        mc alias set minio-1 http://minio-1:9000 minio 1234567890
         mc mb --ignore-existing minio-1/admin-bucket
-           for i in $$(echo "" | sed "s/,/ /g")
+           for i in $$(echo "person-bucket,product-bucket" | sed "s/,/ /g")
         do
           mc mb --ignore-existing minio-1/$$i
         done
@@ -394,3 +417,6 @@ services:
       - .:/variables
       - ./artefacts:/output
       - ./data-transfer:/data-transfer
+volumes:
+  data-transfer-vol:
+    name: data_transfer_vol
