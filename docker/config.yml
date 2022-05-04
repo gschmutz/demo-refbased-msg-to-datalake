@@ -969,7 +969,7 @@ MINIO_browser_enable: true
 #
 #=====  Object Storage UIs ========
 #
-MINIO_CONSOLE_enable: false
+MINIO_CONSOLE_enable: true
 ADMINIO_UI_enable: false
 FILESTASH_enable: false
 S3MANAGER_enable: false

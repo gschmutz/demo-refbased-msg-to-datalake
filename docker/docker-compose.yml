@@ -514,7 +514,7 @@ services:
     restart: unless-stopped
   #  ================================== Minio ========================================== #
   minio-1:
-    image: minio/minio:RELEASE.2022-04-01T03-41-39Z
+    image: minio/minio:RELEASE.2022-05-04T07-45-27Z
     container_name: minio-1
     hostname: minio-1
     labels:
@@ -528,7 +528,7 @@ services:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: 1234567890
       MINIO_REGION_NAME: us-east-1
-      MINIO_BROWSER: 'True'
+      MINIO_BROWSER: on
       #MINIO_PUBLIC_IPS: minio-1
       #MINIO_DOMAIN: minio.io
       #MINIO_DEFAULT_BUCKETS: 'admin-bucket,person-bucket,product-bucket'
@@ -559,6 +559,25 @@ services:
         done
         #
         while [ 1 -eq 1 ];do sleep 60;done
+    restart: unless-stopped
+  #  ================================== Minio Console ========================================== #
+  minio-console:
+    image: minio/console:latest
+    container_name: minio-console
+    hostname: minio-console
+    labels:
+      com.platys.name: minio-console
+      com.platys.webui.title: Minio Console UI
+      com.platys.webui.url: http://${PUBLIC_IP}:28193
+    ports:
+      - 28193:9090
+    environment:
+      CONSOLE_MINIO_SERVER: http://minio-1:9090
+      CONSOLE_PBKDF_PASSPHRASE: abc123!
+      CONSOLE_PBKDF_SALT: abc123!
+    volumes:
+      - ./data-transfer:/data-transfer
+    command: server
     restart: unless-stopped
   #  ================================== Wetty ========================================== #
   wetty:
