@@ -15,6 +15,7 @@ import org.apache.kafka.common.protocol.types.Field;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -38,6 +39,12 @@ public class SpringBootKafkaProducerApplication implements CommandLineRunner {
 
 	@Autowired
 	private AmazonS3 amazonS3;
+
+	@Value(value = "${bucket.person.name}")
+	private String personBucket;
+
+	@Value(value = "${bucket.product.name}")
+	private String productBucket;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootKafkaProducerApplication.class, args);
@@ -63,13 +70,12 @@ public class SpringBootKafkaProducerApplication implements CommandLineRunner {
 		meta.setContentLength(bytes.length);
 		meta.setContentType("application/avro-binary");
 
-		String bucketName = "person-ref-bucket";
 		String objectName = String.valueOf(person.getId()) + ".avro";
 
-		S3Object s3obj = new S3Object(bucketName, objectName);
+		S3Object s3obj = new S3Object(personBucket, objectName);
 
-		PutObjectResult result = amazonS3.putObject(bucketName, objectName, stream, meta);
-		URL s3Url = amazonS3.getUrl(bucketName, objectName);
+		PutObjectResult result = amazonS3.putObject(personBucket, objectName, stream, meta);
+		URL s3Url = amazonS3.getUrl(personBucket, objectName);
 
 		return s3obj;
 	}
@@ -82,13 +88,12 @@ public class SpringBootKafkaProducerApplication implements CommandLineRunner {
 		meta.setContentLength(bytes.length);
 		meta.setContentType("application/avro-binary");
 
-		String bucketName = "product-ref-bucket";
 		String objectName = String.valueOf(product.getId()) + ".avro";
 
-		S3Object s3obj = new S3Object(bucketName, objectName);
+		S3Object s3obj = new S3Object(productBucket, objectName);
 
-		PutObjectResult result = amazonS3.putObject(bucketName, objectName, stream, meta);
-		URL s3Url = amazonS3.getUrl(bucketName, objectName);
+		PutObjectResult result = amazonS3.putObject(productBucket, objectName, stream, meta);
+		URL s3Url = amazonS3.getUrl(productBucket, objectName);
 
 		return s3obj;
 	}
