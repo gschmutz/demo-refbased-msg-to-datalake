@@ -35,9 +35,8 @@ public class KafkaEventProducer {
         SendResult<Long, BusinessEvent> result = null;
         try {
             ProducerRecord<Long,BusinessEvent> producerRecord = new ProducerRecord<>(kafkaTopic, key, businessEvent);
-            producerRecord.headers().add(new RecordHeader("message-version", "1.0".getBytes(StandardCharsets.UTF_8)));
+            producerRecord.headers().add(new RecordHeader("message-version", "1.1".getBytes(StandardCharsets.UTF_8)));
             result = kafkaTemplate.send(producerRecord).get(10, TimeUnit.SECONDS);
-            //result = kafkaTemplate.send(kafkaTopic, key, message).get(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
