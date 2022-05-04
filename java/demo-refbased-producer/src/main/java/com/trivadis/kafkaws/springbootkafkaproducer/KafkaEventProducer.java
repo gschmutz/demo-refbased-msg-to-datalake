@@ -1,14 +1,20 @@
 package com.trivadis.kafkaws.springbootkafkaproducer;
 
 import com.trivadis.demo.dto.BusinessEvent;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.header.internals.RecordHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -28,7 +34,10 @@ public class KafkaEventProducer {
 
         SendResult<Long, BusinessEvent> result = null;
         try {
-            result = kafkaTemplate.send(kafkaTopic, key, businessEvent).get(10, TimeUnit.SECONDS);
+            ProducerRecord<Long,BusinessEvent> producerRecord = new ProducerRecord<>(kafkaTopic, key, businessEvent);
+            producerRecord.headers().add(new RecordHeader("message-version", "1.0".getBytes(StandardCharsets.UTF_8)));
+            result = kafkaTemplate.send(producerRecord).get(10, TimeUnit.SECONDS);
+            //result = kafkaTemplate.send(kafkaTopic, key, message).get(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
