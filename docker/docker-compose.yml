@@ -205,6 +205,27 @@ services:
       - |
         while [ 1 -eq 1 ];do sleep 60;done
     restart: unless-stopped
+  #  ================================== Jikkou ========================================== #
+  jikkou:
+    image: streamthoughts/jikkou:0.9.0
+    container_name: jikkou
+    hostname: jikkou
+    labels:
+      com.platys.name: jikkou
+    environment:
+      JIKKOU_DEFAULT_KAFKA_BOOTSTRAP_SERVERS: kafka-1:19092,kafka-2:19093,kafka-3:19094
+    volumes:
+      - ./data-transfer:/data-transfer
+      - ./scripts/jikkou/:/jikkou
+    command:
+      - topics
+      - apply
+      - --files
+      - /jikkou/
+      - --file-name
+      - '**/*.yml'
+      - --exclude-internals
+      - --yes
   #  ================================== Apache Kafka HQ (AKHQ) ========================================== #
   akhq:
     image: tchiotludo/akhq:latest
@@ -340,21 +361,6 @@ services:
         done
         #
         while [ 1 -eq 1 ];do sleep 60;done
-    restart: unless-stopped
-  #  ================================== File Browser ================= #
-  file-browser:
-    image: filebrowser/filebrowser:latest
-    container_name: file-browser
-    hostname: file-browser
-    labels:
-      com.platys.name: file-browser
-      com.platys.webui.title: File Browser UI
-      com.platys.webui.url: http://${PUBLIC_IP}:28178
-    ports:
-      - 28178:80
-    volumes:
-      - ./data-transfer:/srv
-      - ./conf/filebrowser/filebrowser.json:/.filebrowser.json
     restart: unless-stopped
   #  ================================== Wetty ========================================== #
   wetty:
