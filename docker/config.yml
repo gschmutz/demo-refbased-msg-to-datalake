@@ -278,9 +278,9 @@ HADOOP_datanodes: 2
 #
 # ===== Apache Spark ========
 #
-SPARK_enable: false
+SPARK_enable: true
 # either 2 or 3
-SPARK_major_version: 2
+SPARK_base_version: 3.2
 # "hive" or "in-memory"
 SPARK_catalog: in-memory
 SPARK_workers: 2
@@ -470,7 +470,7 @@ AIRFLOW_provision_examples: false
 #
 # ===== Zeppelin ========
 #
-ZEPPELIN_enable: false
+ZEPPELIN_enable: true
 ZEPPELIN_volume_map_data: false
 ZEPPELIN_admin_username: admin
 ZEPPELIN_admin_password: changeme
