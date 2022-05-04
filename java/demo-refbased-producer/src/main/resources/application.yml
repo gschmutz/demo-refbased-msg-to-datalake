@@ -3,6 +3,12 @@ topic:
   replication-factor: 3
   partitions: 8
 
+bucket:
+  person:
+    name: person-ref-bucket
+  product:
+    name: product-ref-bucket
+
 spring:
   kafka:
     bootstrap-servers:
