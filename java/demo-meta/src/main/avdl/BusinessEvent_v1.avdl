@@ -1,0 +1,10 @@
+@namespace("com.trivadis.demo.dto")
+protocol BusinessEventProtocol {
+
+  record BusinessEvent {
+    timestamp_ms ts;
+    string objectType;
+    string bucketName;
+    string objectName;
+  }
+}

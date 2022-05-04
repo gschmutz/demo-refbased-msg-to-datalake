@@ -1014,7 +1014,7 @@ FIREFOX_use_port_80: false
 #
 # ===== File Browser ========
 #
-FILE_BROWSER_enable: false
+FILE_BROWSER_enable: true
 #
 # ===== Vault ========
 #
