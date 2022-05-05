@@ -126,6 +126,9 @@
                         <business-event-v1-value>
                             target/generated-sources/avro/schema/BusinessEvent.avsc
                         </business-event-v1-value>
+                        <person-refb-value>
+                            target/generated-sources/avro/schema/BusinessEvent.avsc
+                        </person-refb-value>
                         <person-value>
                             target/generated-sources/avro/schema/Person.avsc
                         </person-value>
