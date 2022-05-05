@@ -278,10 +278,11 @@ services:
       SPARK_DEFAULTS_CONF_spark_hadoop_fs_s3a_endpoint: http://minio-1:9000
       SPARK_DEFAULTS_CONF_spark_hadoop_fs_s3a_path_style_access: 'true'
       SPARK_PUBLIC_DNS: ${PUBLIC_IP}
+      SPARK_MASTER_OPTS: -Dspark.deploy.defaultCores=2
       INIT_DAEMON_STEP: setup_spark
       MASTER: spark://spark-master:7077
       SPARK_DEFAULTS_CONF_spark_jars_repositories:
-      SPARK_DEFAULTS_CONF_spark_jars_packages:
+      SPARK_DEFAULTS_CONF_spark_jars_packages: org.apache.spark:spark-avro_2.12:3.2.1,io.delta:delta-core_2.12:1.1.0
       SPARK_DEFAULTS_CONF_spark_jars_excludes:
       SPARK_DEFAULTS_CONF_spark_jars:
       SPARK_DEFAULTS_CONF_spark_jars_ivySettings:
@@ -324,7 +325,7 @@ services:
       SPARK_DEFAULTS_CONF_spark_hadoop_fs_s3a_endpoint: http://minio-1:9000
       SPARK_DEFAULTS_CONF_spark_hadoop_fs_s3a_path_style_access: 'true'
       SPARK_DEFAULTS_CONF_spark_jars_repositories:
-      SPARK_DEFAULTS_CONF_spark_jars_packages:
+      SPARK_DEFAULTS_CONF_spark_jars_packages: org.apache.spark:spark-avro_2.12:3.2.1,io.delta:delta-core_2.12:1.1.0
       SPARK_DEFAULTS_CONF_spark_jars_excludes:
       SPARK_DEFAULTS_CONF_spark_jars:
       SPARK_DEFAULTS_CONF_spark_jars_ivySettings:
@@ -367,7 +368,7 @@ services:
       SPARK_DEFAULTS_CONF_spark_hadoop_fs_s3a_endpoint: http://minio-1:9000
       SPARK_DEFAULTS_CONF_spark_hadoop_fs_s3a_path_style_access: 'true'
       SPARK_DEFAULTS_CONF_spark_jars_repositories:
-      SPARK_DEFAULTS_CONF_spark_jars_packages:
+      SPARK_DEFAULTS_CONF_spark_jars_packages: org.apache.spark:spark-avro_2.12:3.2.1,io.delta:delta-core_2.12:1.1.0
       SPARK_DEFAULTS_CONF_spark_jars_excludes:
       SPARK_DEFAULTS_CONF_spark_jars:
       SPARK_DEFAULTS_CONF_spark_jars_ivySettings:
@@ -481,7 +482,7 @@ services:
       AWS_ENDPOINT: http://minio-1:9000
       AWS_DEFAULT_REGION: us-east-1
       SPARK_DEFAULTS_CONF_spark_jars_repositories:
-      SPARK_DEFAULTS_CONF_spark_jars_packages:
+      SPARK_DEFAULTS_CONF_spark_jars_packages: org.apache.spark:spark-avro_2.12:3.2.1,io.delta:delta-core_2.12:1.1.0
       SPARK_DEFAULTS_CONF_spark_jars_excludes:
       SPARK_DEFAULTS_CONF_spark_jars:
       SPARK_DEFAULTS_CONF_spark_jars_ivySettings:
