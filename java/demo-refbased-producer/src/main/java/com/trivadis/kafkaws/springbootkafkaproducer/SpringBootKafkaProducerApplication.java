@@ -112,7 +112,8 @@ public class SpringBootKafkaProducerApplication implements CommandLineRunner {
 					.setStreet(faker.address().streetName())
 					.setNumber(faker.address().streetAddressNumber())
 					.setCity(faker.address().cityName())
-					.setZipCode(faker.address().zipCode()).build();
+					.setZipCode(faker.address().zipCode())
+						.build();
 
 			S3Object personObj = writeToPersonS3(person);
 
@@ -120,7 +121,9 @@ public class SpringBootKafkaProducerApplication implements CommandLineRunner {
 					.setTs(Instant.now())
 					.setObjectType("Person")
 					.setBucketName(personObj.bucketName)
-					.setObjectName(personObj.objectName).build();
+					.setObjectName(personObj.objectName)
+					.setAvroSchema(Person.SCHEMA$.toString())
+						.build();
 			kafkaEventProducer.produce(index, key, businessEventPerson);
 
 			UUID productId = UUID.randomUUID();
@@ -133,7 +136,9 @@ public class SpringBootKafkaProducerApplication implements CommandLineRunner {
 					.setTs(Instant.now())
 					.setObjectType("Product")
 					.setBucketName(productObj.bucketName)
-					.setObjectName(productObj.objectName).build();
+					.setObjectName(productObj.objectName)
+					.setAvroSchema(Person.SCHEMA$.toString())
+						.build();
 
 			kafkaEventProducer.produce(index, key, businessEventProduct);
 
