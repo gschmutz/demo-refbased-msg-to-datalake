@@ -136,7 +136,7 @@ public class SpringBootKafkaProducerApplication implements CommandLineRunner {
 					.setObjectType("Product")
 					.setBucketName(productObj.bucketName)
 					.setObjectName(productObj.objectName)
-					.setAvroSchema(Person.SCHEMA$.toString())
+					.setAvroSchema(Product.SCHEMA$.toString())
 						.build();
 
 			kafkaEventProducer.produce(index, key, businessEventProduct);
