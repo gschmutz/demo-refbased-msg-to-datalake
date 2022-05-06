@@ -6,5 +6,6 @@ protocol BusinessEventProtocol {
     string objectType;
     string bucketName;
     string objectName;
+    string avroSchema;
   }
 }
