@@ -17,7 +17,7 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.LongSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
-      compression-type: snappy
+#      compression-type: snappy
       properties:
         auto.register.schemas: false
         use.latest.version: true
