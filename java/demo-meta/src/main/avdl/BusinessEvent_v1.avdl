@@ -6,5 +6,6 @@ protocol BusinessEventProtocol {
     string objectType;
     string bucketName;
     string objectName;
+    string avroSchema;    // could and maybe should be replaced by the schema ID
   }
 }
