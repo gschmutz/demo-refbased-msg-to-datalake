@@ -10,6 +10,10 @@ import com.github.javafaker.Faker;
 import com.trivadis.demo.dto.BusinessEvent;
 import com.trivadis.demo.dto.Person;
 import com.trivadis.demo.dto.Product;
+import io.confluent.kafka.schemaregistry.ParsedSchema;
+import io.confluent.kafka.schemaregistry.avro.AvroSchema;
+import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
+import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
 import org.apache.avro.specific.SpecificRecord;
 import org.apache.kafka.common.protocol.types.Field;
 import org.slf4j.Logger;
@@ -45,6 +49,9 @@ public class SpringBootKafkaProducerApplication implements CommandLineRunner {
 
 	@Value(value = "${bucket.product.name}")
 	private String productBucket;
+
+	@Value(value = "${spring.kafka.properties.schema.registry.url}")
+	private String schemaRegistryUrl;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootKafkaProducerApplication.class, args);
@@ -102,6 +109,9 @@ public class SpringBootKafkaProducerApplication implements CommandLineRunner {
 		Long key = (id > 0) ? id : null;
 
 		Faker faker = new Faker();
+		SchemaRegistryClient registryClient = new CachedSchemaRegistryClient(schemaRegistryUrl, 10);
+		int personSchemaId = registryClient.getId("person-value", new AvroSchema(Person.SCHEMA$), true);
+		int productSchemaId = registryClient.getId("product-value", new AvroSchema(Product.SCHEMA$), true);
 
 		for (int index = 0; index < sendMessageCount; index++) {
 
@@ -113,7 +123,7 @@ public class SpringBootKafkaProducerApplication implements CommandLineRunner {
 					.setNumber(faker.address().streetAddressNumber())
 					.setCity(faker.address().cityName())
 					.setZipCode(faker.address().zipCode())
-						.build();
+					.build();
 
 			S3Object personObj = writeToPersonS3(person);
 
@@ -122,8 +132,9 @@ public class SpringBootKafkaProducerApplication implements CommandLineRunner {
 					.setObjectType("Person")
 					.setBucketName(personObj.bucketName)
 					.setObjectName(personObj.objectName)
+					.setAvroSchemaId(personSchemaId)
 					.setAvroSchema(Person.SCHEMA$.toString())
-						.build();
+					.build();
 			kafkaEventProducer.produce(index, key, businessEventPerson);
 
 			UUID productId = UUID.randomUUID();
@@ -137,8 +148,9 @@ public class SpringBootKafkaProducerApplication implements CommandLineRunner {
 					.setObjectType("Product")
 					.setBucketName(productObj.bucketName)
 					.setObjectName(productObj.objectName)
+					.setAvroSchemaId(productSchemaId)
 					.setAvroSchema(Product.SCHEMA$.toString())
-						.build();
+					.build();
 
 			kafkaEventProducer.produce(index, key, businessEventProduct);
 
