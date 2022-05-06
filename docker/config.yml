@@ -278,19 +278,19 @@ HADOOP_datanodes: 2
 #
 # ===== Apache Spark ========
 #
-SPARK_enable: false
+SPARK_enable: true
 # either 2 or 3
-SPARK_major_version: 2
+SPARK_base_version: 3.1
 # "hive" or "in-memory"
 SPARK_catalog: in-memory
 SPARK_workers: 2
 # to restrict the default cores, use '-Dspark.deploy.defaultCores=6'
-SPARK_master_opts: ''
+SPARK_master_opts: '-Dspark.deploy.defaultCores=2'
 SPARK_worker_cores:
 SPARK_worker_memory:
 SPARK_worker_opts: '-Dspark.worker.cleanup.enabled=true'
 SPARK_jars_repositories: ''
-SPARK_jars_packages: ''
+SPARK_jars_packages: 'org.apache.spark:spark-avro_2.12:3.1.3,io.delta:delta-core_2.12:1.1.0'
 SPARK_jars_excludes: ''
 SPARK_jars: ''
 SPARK_jars_ivySettings: ''
@@ -470,7 +470,7 @@ AIRFLOW_provision_examples: false
 #
 # ===== Zeppelin ========
 #
-ZEPPELIN_enable: false
+ZEPPELIN_enable: true
 ZEPPELIN_volume_map_data: false
 ZEPPELIN_admin_username: admin
 ZEPPELIN_admin_password: changeme
